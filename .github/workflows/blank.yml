@@ -24,7 +24,7 @@ jobs:
       # defines environment object that the job references 
       environment:
         name: github-pages # environment name 
-        url: ${{ steps.deployment.outputs.page_url }} # environment url 
+        url: https://euniceyoh.github.io/ # environment url 
       # type of runner that the job will run on, specifies operating system 
       runs-on: ubuntu-latest 
       # represent a sequence of tasks that will be executed as part of the job
