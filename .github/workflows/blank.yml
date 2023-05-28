@@ -1,37 +1,43 @@
-# This is a basic workflow to help you get started with Actions
+# Workflow to deploy static content to GitHub Pages 
 
-name: CI
+# name of this workflow 
+name: Deploy static content to Pages 
 
-# Controls when the workflow will run
+# defines which event to trigger workflow 
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # triggers workflow on push request events for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  # Enables "Run workflow" button on Actions tab 
+  # enables "Run workflow" button on Actions tab to run workflow manually 
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Grant GITHUB_TOKEN the permissions required to make a Pages deployment as top-level key
+permissions: 
+      contents: read 
+      pages: write # to deploy to pages 
+      id-token: write # to verify the deployment originates from an appropriate source
+
+# workflow contains a single job called "deploy"
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on, specifies operating system 
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  deploy: # name of job 
+      # defines environment object that the job references 
+      environment:
+        name: github-pages # environment name 
+        url: ${{ steps.deployment.outputs.page_url }} # environment url 
+      # type of runner that the job will run on, specifies operating system 
+      runs-on: ubuntu-latest 
+      # represent a sequence of tasks that will be executed as part of the job
+      steps: 
+        - name: Checkout # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+          uses: actions/checkout@v3
+        - name: Setup Pages # enable Pages and extract various metadata about a site
+          uses: actions/configure-pages@v3 
+        - name: Upload artifact # packaging and uploading artifact that can be deployed to Pages
+          uses: actions/upload-pages-artifact@v1
+          with: 
+            path: '.' # Upload entire repository 
+        - name: Deploy to Github Pages # deploy artifacts to github pages 
+          uses: actions/deploy-pages@v2 
+  
+  

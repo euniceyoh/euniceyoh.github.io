@@ -1,6 +1,6 @@
 # Eunice Oh 
 
-## :wave: Introduction 
+## :wave: About Me  
 
 <img src="assets/profilepic.jpg" width="200">
 
